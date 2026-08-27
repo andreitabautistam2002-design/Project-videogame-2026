@@ -1,4 +1,4 @@
-#Andrea Bautista
+# Andrea Bautista
 
 ![Foto de Andrea](Andrea/Foto.jpg)
 
@@ -6,7 +6,7 @@
 
 **Ubicación:** Cúcuta, Colombia
 
-##Perfil:
+## Perfil:
 Soy estudiante de Ingeniería Multimedia. Me interesa todo lo relacionado con explorar
 la creatividad y aprender sobre diferentes herramientas y tecnologías relacionadas
 con el mundo multimedia. 

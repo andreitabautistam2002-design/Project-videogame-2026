@@ -1,6 +1,6 @@
 # Lionar Alexis Garcia 
 
-![Foto de perfil](Captura de pantalla 2026-08-28 143526.png)
+![Foto de perfil](perfil.jpg)
 
 * **Rol:** Diseñado Visual/ Audio 
 * **Ubicación:** Pmplona 

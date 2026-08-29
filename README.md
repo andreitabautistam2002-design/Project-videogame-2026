@@ -1,6 +1,6 @@
 # Lionar Alexis Garcia 
 
-![Foto de perfil](https://github.com/andreitabautistam2002-design/Project-videogame-2026/commit/25c229125c8ba02ac2173c618243c6d928baca98#commitcomment-198213758)
+![Foto de perfil](perfil.jpg)
 
 * **Rol:** Disenador visual / Audio
 * **Ubicación:** Pamplona Norte de Santander  

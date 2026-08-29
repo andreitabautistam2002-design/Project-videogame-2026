@@ -2,7 +2,7 @@
 
 ![Foto de Andrea](Andrea/Foto.jpg)
 
-**Rol:** Por definir
+**Rol:** Diseñador de niveles y Tester
 
 **Ubicación:** Cúcuta, Colombia
 

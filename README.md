@@ -1,6 +1,6 @@
 # Lionar Alexis Garcia Perez
 
-![Foto de perfil](perfil.jpg)
+![Foto de perfil](Leonardo/perfil.jpg)
 
 * **Rol:** Diseñado Visual/ Audio 
 * **Ubicación:** Pmplona 

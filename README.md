@@ -1,9 +1,0 @@
-# Lionar Alexis Garcia 
-
-![Foto de perfil](perfil.jpg)
-
-* **Rol:** Disenador visual / Audio
-* **Ubicación:** Pamplona Norte de Santander  
-
-## Perfil
-Estudiante apasionado por el desarrollo y diseño de videojuegos. Me enfoco en crear experiencias interactivas atractivas, combinando creatividad en el diseño de niveles con lógica de programación eficiente. Siempre en búsqueda de aprender nuevas herramientas y metodologías de trabajo en equipo.

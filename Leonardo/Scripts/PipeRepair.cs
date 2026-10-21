@@ -2,33 +2,36 @@ using UnityEngine;
 
 public class PipeRepair : MonoBehaviour
 {
-    [Header("Repair Sequence Steps")]
+    [Header("Repair Sequence Settings")]
     private int currentStep = 1;
-    private const int totalSteps = 3; // 1: Close valve, 2: Place patch, 3: Tighten nut
+    private const int totalSteps = 3; // Step 1: Close valve, Step 2: Place patch, Step 3: Tighten nut
     private bool isRepaired = false;
 
-    // Method called when player presses 'E' on the interactive leak point
+    // Method triggered when the player interacts with a leaking pipe
     public void ExecuteRepairStep(int playerStepChoice)
     {
+        // Do nothing if the leak is already fixed
         if (isRepaired) return;
 
-        // Verify if the player follows the correct sequential order
+        // Check if the player selected the correct step in the repair sequence
         if (playerStepChoice == currentStep)
         {
-            Debug.Log("Step " + currentStep + " completed successfully.");
+            Debug.Log("Repair step " + currentStep + " completed successfully.");
             currentStep++;
 
+            // If all sequence steps are completed, mark pipe as fully repaired
             if (currentStep > totalSteps)
             {
                 isRepaired = true;
-                Debug.Log("Leak fully repaired! Environment restoring.");
-                // TODO: Trigger visual change (dry floor, flowers blooming)
+                Debug.Log("Leak fully repaired! Water saved and area restored.");
+                // TODO: Trigger visual environmental change (dry floor and blooming plants)
             }
         }
         else
         {
-            Debug.Log("Wrong step order! Restarting repair sequence.");
-            currentStep = 1; // Reset sequence on failure
+            // Reset sequence if player chooses an incorrect step order
+            Debug.Log("Incorrect sequence order! Resetting repair steps.");
+            currentStep = 1;
         }
     }
 }

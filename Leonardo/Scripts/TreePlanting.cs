@@ -11,34 +11,35 @@ public class TreePlanting : MonoBehaviour
     [SerializeField] private AudioClip successPlantSound;
     [SerializeField] private AudioClip errorPlantSound;
 
-    // Method called when the player presses 'E' on a planting zone
+    // Method called when the player interacts with a designated planting zone
     public void TryPlantTree(string playerSelectedSpecies, string zoneSoilType)
     {
+        // Prevent planting multiple trees in the same spot
         if (isPlanted)
         {
-            Debug.Log("A tree is already planted in this zone.");
+            Debug.Log("A tree has already been planted in this area.");
             return;
         }
 
-        // Check if the selected tree species matches the soil requirements of the zone
+        // Validate if the selected plant species matches the soil requirements
         if (zoneSoilType == requiredSoilType)
         {
             isPlanted = true;
-            Debug.Log("Correct species planted! Environmental progress increasing.");
+            Debug.Log("Correct plant species selected! Tree planted successfully.");
             PlaySound(successPlantSound);
             
-            // TODO: Trigger visual change (spawn tree sprite/model and make it grow)
+            // TODO: Instantiate tree visual asset and update sustainability progress
         }
         else
         {
-            Debug.Log("Incorrect species for this soil type! The plant cannot grow here.");
+            Debug.Log("Incompatible plant species for this soil type! Action failed.");
             PlaySound(errorPlantSound);
             
-            // TODO: Trigger UI warning message, allow player to select another species
+            // TODO: Show accessible UI hint regarding soil conditions
         }
     }
 
-    // Helper method to play audio feedback (WCAG / DUA multimodal compliance)
+    // Helper method to play audio feedback following accessibility requirements
     private void PlaySound(AudioClip clip)
     {
         if (plantingAudio != null && clip != null)

@@ -8,26 +8,32 @@ public class WasteBin : MonoBehaviour
     [SerializeField] private AudioClip successSound;
     [SerializeField] private AudioClip errorSound;
 
-    // Detect when the player interacts with the correct or incorrect bin
+    // Method called when the player attempts to deposit collected waste
     public void TryDepositWaste(string playerWasteType)
     {
-        // Check if the waste matches the bin's category
+        // Compare the waste category carried by the player against the accepted type
         if (playerWasteType == acceptedWasteType)
         {
-            Debug.log("Correct classification! Increasing environmental progress.");
+            // Log success feedback and trigger positive audio response
+            Debug.Log("Correct waste classification! Increasing environmental progress.");
             PlaySound(successSound);
-            // TODO: Trigger UI success message and increase sustainability score
+            
+            // TODO: Increase global sustainability indicator and update UI text
         }
         else
         {
-            Debug.log("Incorrect classification! Waste rejected by the bin.");
+            // Log error feedback and trigger rejection audio response
+            Debug.Log("Incorrect classification! Waste rejected by the bin.");
             PlaySound(errorSound);
-            // TODO: Trigger UI error message, return waste to player
+            
+            // TODO: Display accessible UI error message and return item to player
         }
     }
 
+    // Helper method to trigger audio clips complying with WCAG / DUA guidelines
     private void PlaySound(AudioClip clip)
     {
+        // Verify audio source and clip exist before playing
         if (feedbackAudio != null && clip != null)
         {
             feedbackAudio.PlayOneShot(clip);

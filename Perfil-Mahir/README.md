@@ -44,7 +44,7 @@ El jugador debe recuperar un barrio afectado por residuos, fugas de agua y pérd
 | Moverse a la izquierda | A o flecha izquierda |
 | Moverse a la derecha | D o flecha derecha |
 | Saltar | Barra espaciadora |
-| Recoger o interactuar | E |
+| Recoger o interactuar | E|
 
 ## 🏁 Objetivo
 

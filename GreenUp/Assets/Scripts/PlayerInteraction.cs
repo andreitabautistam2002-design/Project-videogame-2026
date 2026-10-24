@@ -4,6 +4,8 @@ public class PlayerInteraction : MonoBehaviour
 {
     private WasteBin nearbyWasteBin;
     private PipeRepair nearbyPipe;
+    private TreePlanting nearbyTree;
+
     private int currentPipeStep = 1;
 
     private void Update()
@@ -26,6 +28,12 @@ public class PlayerInteraction : MonoBehaviour
                 currentPipeStep = 1;
             }
         }
+
+        // Plant a tree when the player is near a planting zone
+        if (nearbyTree != null && Input.GetKeyDown(KeyCode.E))
+        {
+            nearbyTree.TryPlantTree("Urban Tree", "Urban Soil");
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -46,11 +54,19 @@ public class PlayerInteraction : MonoBehaviour
             nearbyPipe = pipe;
             currentPipeStep = 1;
         }
+
+        // Detect nearby planting zone
+        TreePlanting tree = other.GetComponent<TreePlanting>();
+
+        if (tree != null)
+        {
+            nearbyTree = tree;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        // Clear waste bin reference when leaving its interaction area
+        // Clear waste bin reference
         WasteBin wasteBin = other.GetComponent<WasteBin>();
 
         if (wasteBin != null && wasteBin == nearbyWasteBin)
@@ -58,13 +74,21 @@ public class PlayerInteraction : MonoBehaviour
             nearbyWasteBin = null;
         }
 
-        // Clear pipe reference when leaving its interaction area
+        // Clear pipe reference
         PipeRepair pipe = other.GetComponent<PipeRepair>();
 
         if (pipe != null && pipe == nearbyPipe)
         {
             nearbyPipe = null;
             currentPipeStep = 1;
+        }
+
+        // Clear tree reference
+        TreePlanting tree = other.GetComponent<TreePlanting>();
+
+        if (tree != null && tree == nearbyTree)
+        {
+            nearbyTree = null;
         }
     }
 }

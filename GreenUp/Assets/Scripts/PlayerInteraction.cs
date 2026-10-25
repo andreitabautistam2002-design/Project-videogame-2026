@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -8,12 +9,33 @@ public class PlayerInteraction : MonoBehaviour
 
     private int currentPipeStep = 1;
 
+    [Header("UI Feedback")]
+    [SerializeField] private TMP_Text feedbackText;
+
+    private void Start()
+    {
+        // Clear the feedback message when the scene starts
+        if (feedbackText != null)
+        {
+            feedbackText.text = "";
+        }
+    }
+
     private void Update()
     {
         // Deposit plastic waste when the player is near a waste bin
         if (nearbyWasteBin != null && Input.GetKeyDown(KeyCode.E))
         {
             nearbyWasteBin.TryDepositWaste("Plastic");
+
+            if (nearbyWasteBin.gameObject.name.Contains("Plastic"))
+            {
+                ShowFeedback("Correct classification!");
+            }
+            else
+            {
+                ShowFeedback("Incorrect classification!");
+            }
         }
 
         // Advance through the pipe repair sequence
@@ -21,10 +43,13 @@ public class PlayerInteraction : MonoBehaviour
         {
             nearbyPipe.ExecuteRepairStep(currentPipeStep);
 
+            ShowFeedback("Repair step " + currentPipeStep + " completed");
+
             currentPipeStep++;
 
             if (currentPipeStep > 3)
             {
+                ShowFeedback("Leak fully repaired!");
                 currentPipeStep = 1;
             }
         }
@@ -33,6 +58,8 @@ public class PlayerInteraction : MonoBehaviour
         if (nearbyTree != null && Input.GetKeyDown(KeyCode.E))
         {
             nearbyTree.TryPlantTree("Urban Tree", "Urban Soil");
+
+            ShowFeedback("Tree planted successfully!");
         }
     }
 
@@ -89,6 +116,15 @@ public class PlayerInteraction : MonoBehaviour
         if (tree != null && tree == nearbyTree)
         {
             nearbyTree = null;
+        }
+    }
+
+    private void ShowFeedback(string message)
+    {
+        // Display visual feedback for accessibility
+        if (feedbackText != null)
+        {
+            feedbackText.text = message;
         }
     }
 }

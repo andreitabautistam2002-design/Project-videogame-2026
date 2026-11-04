@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using TMPro;
 
@@ -12,9 +13,15 @@ public class PlayerInteraction : MonoBehaviour
     [Header("UI Feedback")]
     [SerializeField] private TMP_Text feedbackText;
 
+    // Feedback colors
+    private readonly Color32 plasticColor = new Color32(139, 90, 0, 255);
+    private readonly Color32 paperColor = new Color32(21, 87, 153, 255);
+    private readonly Color32 treeColor = new Color32(46, 125, 50, 255);
+    private readonly Color32 pipeColor = new Color32(0, 105, 110, 255);
+    private readonly Color32 errorColor = new Color32(183, 28, 28, 255); 
+
     private void Start()
     {
-        // Clear the feedback message when the scene starts
         if (feedbackText != null)
         {
             feedbackText.text = "";
@@ -23,49 +30,78 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Update()
     {
-        // Deposit plastic waste when the player is near a waste bin
+        // Waste classification
         if (nearbyWasteBin != null && Input.GetKeyDown(KeyCode.E))
         {
             nearbyWasteBin.TryDepositWaste("Plastic");
 
             if (nearbyWasteBin.gameObject.name.Contains("Plastic"))
             {
-                ShowFeedback("Correct classification!");
+                ShowFeedback("¡Clasificación correcta!", plasticColor);
             }
             else
             {
-                ShowFeedback("Incorrect classification!");
+                ShowFeedback("¡Clasificación incorrecta!", errorColor);
             }
         }
 
-        // Advance through the pipe repair sequence
+
+        // Pipe repair
         if (nearbyPipe != null && Input.GetKeyDown(KeyCode.E))
         {
-            nearbyPipe.ExecuteRepairStep(currentPipeStep);
-
-            ShowFeedback("Repair step " + currentPipeStep + " completed");
-
-            currentPipeStep++;
-
-            if (currentPipeStep > 3)
+            if (!nearbyPipe.IsRepaired)
             {
-                ShowFeedback("Leak fully repaired!");
-                currentPipeStep = 1;
+                bool stepCompleted = nearbyPipe.ExecuteRepairStep(currentPipeStep);
+
+                if (!stepCompleted)
+                {
+                    ShowFeedback(
+                        "¡Orden incorrecto! Intenta nuevamente.",
+                        errorColor
+                    );
+
+                    currentPipeStep = 1;
+                }
+                else
+                {
+                    if (currentPipeStep == 3)
+                    {
+                        ShowFeedback(
+                            "¡Fuga reparada por completo!",
+                            pipeColor
+                        );
+
+                        currentPipeStep = 1;
+                    }
+                    else
+                    {
+                        ShowFeedback(
+                            "¡Paso " + currentPipeStep + " completado!",
+                            pipeColor
+                        );
+
+                        currentPipeStep++;
+                    }
+                }
+            }
+            else
+            {
+                ShowFeedback("¡La fuga ya está reparada!", pipeColor);
             }
         }
 
-        // Plant a tree when the player is near a planting zone
+
+        // Tree planting
         if (nearbyTree != null && Input.GetKeyDown(KeyCode.E))
         {
             nearbyTree.TryPlantTree("Urban Tree", "Urban Soil");
 
-            ShowFeedback("Tree planted successfully!");
+            ShowFeedback("¡Árbol plantado correctamente!", treeColor);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Detect nearby waste bin
         WasteBin wasteBin = other.GetComponent<WasteBin>();
 
         if (wasteBin != null)
@@ -73,7 +109,6 @@ public class PlayerInteraction : MonoBehaviour
             nearbyWasteBin = wasteBin;
         }
 
-        // Detect nearby leaking pipe
         PipeRepair pipe = other.GetComponent<PipeRepair>();
 
         if (pipe != null)
@@ -82,7 +117,6 @@ public class PlayerInteraction : MonoBehaviour
             currentPipeStep = 1;
         }
 
-        // Detect nearby planting zone
         TreePlanting tree = other.GetComponent<TreePlanting>();
 
         if (tree != null)
@@ -93,7 +127,6 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        // Clear waste bin reference
         WasteBin wasteBin = other.GetComponent<WasteBin>();
 
         if (wasteBin != null && wasteBin == nearbyWasteBin)
@@ -101,7 +134,6 @@ public class PlayerInteraction : MonoBehaviour
             nearbyWasteBin = null;
         }
 
-        // Clear pipe reference
         PipeRepair pipe = other.GetComponent<PipeRepair>();
 
         if (pipe != null && pipe == nearbyPipe)
@@ -110,7 +142,6 @@ public class PlayerInteraction : MonoBehaviour
             currentPipeStep = 1;
         }
 
-        // Clear tree reference
         TreePlanting tree = other.GetComponent<TreePlanting>();
 
         if (tree != null && tree == nearbyTree)
@@ -119,12 +150,12 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    private void ShowFeedback(string message)
+    private void ShowFeedback(string message, Color color)
     {
-        // Display visual feedback for accessibility
         if (feedbackText != null)
         {
             feedbackText.text = message;
+            feedbackText.color = color;
         }
     }
 }

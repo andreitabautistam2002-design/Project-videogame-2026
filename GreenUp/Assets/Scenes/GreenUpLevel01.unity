@@ -459,6 +459,9 @@ MonoBehaviour:
   jumpForce: 7
   audioSource: {fileID: 484354831}
   jumpSound: {fileID: 8300000, guid: e7644a4958fd1b147ba4b7f9f548dba2, type: 3}
+  leftFootstepSound: {fileID: 8300000, guid: 9eac06fe7fd08b64dbb10750b590c10d, type: 3}
+  rightFootstepSound: {fileID: 8300000, guid: bdd36eba0e275284f8344a1a239e5680, type: 3}
+  footstepInterval: 0.27
   groundCheck: {fileID: 1530339075}
   groundLayer:
     serializedVersion: 2

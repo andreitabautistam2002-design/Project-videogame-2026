@@ -10,16 +10,21 @@ public class PlayerController : MonoBehaviour
     [Header("Audio Settings")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip leftFootstepSound;
+    [SerializeField] private AudioClip rightFootstepSound;
+    [SerializeField] private float footstepInterval = 0.20f;
 
     private Rigidbody2D rb;
     private Animator animator;
     private bool isGrounded;
+    private float moveInput;
+    private float footstepTimer;
+    private bool nextFootIsLeft = true;
 
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         // Initialize required components
         rb = GetComponent<Rigidbody2D>();
@@ -31,19 +36,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        // Execute player movement and jump checks on every frame
+        // Handle player movement, jumping and footsteps
         HandleMovement();
         HandleJump();
+        HandleFootsteps();
     }
 
-    // Method to handle horizontal movement using A/D or Arrow keys
     private void HandleMovement()
     {
         // Read horizontal movement input
-        float moveInput = Input.GetAxis("Horizontal");
+        moveInput = Input.GetAxis("Horizontal");
 
         // Apply horizontal velocity while preserving vertical velocity
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
@@ -52,7 +56,6 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Speed", Mathf.Abs(moveInput));
     }
 
-    // Method to handle jump mechanics and jumping animation
     private void HandleJump()
     {
         // Check if the player is touching the ground
@@ -75,6 +78,35 @@ public class PlayerController : MonoBehaviour
             {
                 audioSource.PlayOneShot(jumpSound);
             }
+        }
+    }
+
+    private void HandleFootsteps()
+    {
+        // Check whether the player is moving on the ground
+        if (!isGrounded || Mathf.Abs(moveInput) < 0.1f)
+        {
+            footstepTimer = 0f;
+            return;
+        }
+
+        // Wait until the next footstep is due
+        footstepTimer -= Time.deltaTime;
+
+        if (footstepTimer <= 0f)
+        {
+            // Alternate between left and right footstep sounds
+            AudioClip footstep = nextFootIsLeft
+                ? leftFootstepSound
+                : rightFootstepSound;
+
+            if (audioSource != null && footstep != null)
+            {
+                audioSource.PlayOneShot(footstep);
+            }
+
+            nextFootIsLeft = !nextFootIsLeft;
+            footstepTimer = footstepInterval;
         }
     }
 }

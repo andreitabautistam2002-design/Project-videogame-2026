@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -5,6 +6,10 @@ public class PlayerController : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float jumpForce = 7f;
+
+    [Header("Audio Settings")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip jumpSound;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -19,6 +24,11 @@ public class PlayerController : MonoBehaviour
         // Initialize required components
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
     }
 
     // Update is called once per frame
@@ -59,6 +69,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+
+            // Play the jump sound effect
+            if (audioSource != null && jumpSound != null)
+            {
+                audioSource.PlayOneShot(jumpSound);
+            }
         }
     }
 }

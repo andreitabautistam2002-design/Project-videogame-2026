@@ -25,11 +25,7 @@ Tengo *23 años* y soy estudiante del programa de *Ingeniería Multimedia, origi
 
 **Ubicación:** Cúcuta, Colombia
 
-## Perfil:
-Soy estudiante de Ingeniería Multimedia. Me interesa todo lo relacionado con explorar
-la creatividad y aprender sobre diferentes herramientas y tecnologías relacionadas
-con el mundo multimedia. 
-# Lionar Alexis Garcia Perez
+
 
 
 # Carlos Eduardo Serrano Gómez

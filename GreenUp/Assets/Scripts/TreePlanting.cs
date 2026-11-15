@@ -1,45 +1,88 @@
+
+using System.Collections;
 using UnityEngine;
 
 public class TreePlanting : MonoBehaviour
 {
     [Header("Planting Settings")]
-    [SerializeField] private string requiredSoilType; // e.g., "Humid Soil", "Dry Soil", "Urban Soil"
+    [SerializeField] private string requiredSoilType;
     [SerializeField] private bool isPlanted = false;
-    
+
+    [Header("Growth Animation")]
+    [SerializeField] private float growthScale = 1.25f;
+    [SerializeField] private float growthDuration = 0.8f;
+
+    private Vector3 originalScale;
+
     [Header("Audio Feedback")]
     [SerializeField] private AudioSource plantingAudio;
     [SerializeField] private AudioClip successPlantSound;
+    [SerializeField] private AudioClip growthSound;
     [SerializeField] private AudioClip errorPlantSound;
 
-    // Method called when the player interacts with a designated planting zone
+    private void Awake()
+    {
+        originalScale = transform.localScale;
+
+        if (plantingAudio == null)
+        {
+            plantingAudio = gameObject.AddComponent<AudioSource>();
+            plantingAudio.playOnAwake = false;
+            plantingAudio.loop = false;
+            plantingAudio.spatialBlend = 0f;
+        }
+    }
+
     public void TryPlantTree(string playerSelectedSpecies, string zoneSoilType)
     {
-        // Prevent planting multiple trees in the same spot
         if (isPlanted)
         {
             Debug.Log("A tree has already been planted in this area.");
             return;
         }
 
-        // Validate if the selected plant species matches the soil requirements
         if (zoneSoilType == requiredSoilType)
         {
             isPlanted = true;
+
             Debug.Log("Correct plant species selected! Tree planted successfully.");
+
             PlaySound(successPlantSound);
-            
-            // TODO: Instantiate tree visual asset and update sustainability progress
+            StartCoroutine(GrowPlant());
         }
         else
         {
             Debug.Log("Incompatible plant species for this soil type! Action failed.");
+
             PlaySound(errorPlantSound);
-            
-            // TODO: Show accessible UI hint regarding soil conditions
         }
     }
 
-    // Helper method to play audio feedback following accessibility requirements
+    private IEnumerator GrowPlant()
+    {
+        Vector3 targetScale = originalScale * growthScale;
+        float elapsedTime = 0f;
+        
+        PlaySound(growthSound);
+
+        while (elapsedTime < growthDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            float progress = Mathf.Clamp01(elapsedTime / growthDuration);
+
+            transform.localScale = Vector3.Lerp(
+                originalScale,
+                targetScale,
+                progress
+            );
+
+            yield return null;
+        }
+
+        transform.localScale = targetScale;
+    }
+
     private void PlaySound(AudioClip clip)
     {
         if (plantingAudio != null && clip != null)

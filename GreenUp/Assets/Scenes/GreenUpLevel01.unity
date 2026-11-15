@@ -687,6 +687,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e932e9807b76da46b62bd7467745ad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pipeRenderer: {fileID: 504546520}
+  repairedPipeSprite: {fileID: 21300000, guid: c5ecbd83d7669a445abc1fedb5924e25, type: 3}
+  repairAudio: {fileID: 0}
+  repairStepSound: {fileID: 8300000, guid: 2e49be5d838cbf24e826638c2cef2b62, type: 3}
+  repairCompleteSound: {fileID: 8300000, guid: 1adf4648e568f6643b2e9e0cb706e10c, type: 3}
 --- !u!212 &504546520
 SpriteRenderer:
   m_ObjectHideFlags: 0

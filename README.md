@@ -1,13 +1,3 @@
-# Andrea Bautista
-
-![Foto de Andrea](Andrea/Foto.jpg)
-
-**Rol:** Diseñador de niveles y Tester
-
-**Ubicación:** Cúcuta, Colombia
-
-
-
 
 # Carlos Eduardo Serrano Gómez
 

@@ -1,20 +1,3 @@
-
-# Carlos Eduardo Serrano Gómez
-
-<img src="Carlos/foto_personal.jpg" width="180">
-
-**Rol:** Game Programmer
-
-**Ubicación:** Colombia
-
-## Perfil
-
-Estudiante de Ingeniería Multimedia interesado en la programación, el desarrollo de videojuegos y la creación de experiencias digitales interactivas.
-
-## Plato favorito
-
-<img src="Carlos/plato_favorito.jpg" width="250">
-
 ## GreenUp
 
 GreenUp es un videojuego educativo 2D orientado a promover buenas prácticas ambientales mediante acciones como la clasificación de residuos, la reparación de fugas de agua y la plantación de árboles.

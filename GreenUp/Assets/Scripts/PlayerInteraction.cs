@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using TMPro;
 
@@ -13,12 +12,11 @@ public class PlayerInteraction : MonoBehaviour
     [Header("UI Feedback")]
     [SerializeField] private TMP_Text feedbackText;
 
-    // Feedback colors
-    private readonly Color32 plasticColor = new Color32(139, 90, 0, 255);
-    private readonly Color32 paperColor = new Color32(21, 87, 153, 255);
+    private readonly Color32 plasticColor = new Color32(70, 70, 70, 255);
+    private readonly Color32 organicColor = new Color32(46, 125, 50, 255);
     private readonly Color32 treeColor = new Color32(46, 125, 50, 255);
     private readonly Color32 pipeColor = new Color32(0, 105, 110, 255);
-    private readonly Color32 errorColor = new Color32(183, 28, 28, 255); 
+    private readonly Color32 errorColor = new Color32(183, 28, 28, 255);
 
     private void Start()
     {
@@ -30,28 +28,58 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Update()
     {
-        // Waste classification
-        if (nearbyWasteBin != null && Input.GetKeyDown(KeyCode.E))
-        {
-            nearbyWasteBin.TryDepositWaste("Plastic");
+        bool interactionPressed =
+            Input.GetKeyDown(KeyCode.E)
+            || Input.GetKeyDown(KeyCode.Return);
 
+        // Waste classification
+        if (nearbyWasteBin != null && interactionPressed)
+        {
             if (nearbyWasteBin.gameObject.name.Contains("Plastic"))
             {
-                ShowFeedback("¡Clasificación correcta!", plasticColor);
+                nearbyWasteBin.TryDepositWaste("Plastic");
+
+                if (!HasGameEnded())
+                {
+                    ShowFeedback(
+                        "¡Residuo aprovechable clasificado correctamente!",
+                        plasticColor
+                    );
+                }
+            }
+            else if (nearbyWasteBin.gameObject.name.Contains("Organic"))
+            {
+                nearbyWasteBin.TryDepositWaste("Organic");
+
+                if (!HasGameEnded())
+                {
+                    ShowFeedback(
+                        "¡Residuo orgánico clasificado correctamente!",
+                        organicColor
+                    );
+                }
             }
             else
             {
-                ShowFeedback("¡Clasificación incorrecta!", errorColor);
+                ShowFeedback(
+                    "¡Contenedor no reconocido!",
+                    errorColor
+                );
             }
         }
 
-
         // Pipe repair
-        if (nearbyPipe != null && Input.GetKeyDown(KeyCode.E))
+        if (nearbyPipe != null && interactionPressed)
         {
             if (!nearbyPipe.IsRepaired)
             {
-                bool stepCompleted = nearbyPipe.ExecuteRepairStep(currentPipeStep);
+                bool stepCompleted =
+                    nearbyPipe.ExecuteRepairStep(currentPipeStep);
+
+                if (HasGameEnded())
+                {
+                    return;
+                }
 
                 if (!stepCompleted)
                 {
@@ -86,18 +114,35 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                ShowFeedback("¡La fuga ya está reparada!", pipeColor);
+                ShowFeedback(
+                    "¡La fuga ya está reparada!",
+                    pipeColor
+                );
             }
         }
 
-
         // Tree planting
-        if (nearbyTree != null && Input.GetKeyDown(KeyCode.E))
+        if (nearbyTree != null && interactionPressed)
         {
-            nearbyTree.TryPlantTree("Urban Tree", "Urban Soil");
+            nearbyTree.TryPlantTree(
+                "Urban Tree",
+                "Urban Soil"
+            );
 
-            ShowFeedback("¡Árbol plantado correctamente!", treeColor);
+            if (!HasGameEnded())
+            {
+                ShowFeedback(
+                    "¡Árbol plantado correctamente!",
+                    treeColor
+                );
+            }
         }
+    }
+
+    private bool HasGameEnded()
+    {
+        return GameManager.Instance != null
+            && GameManager.Instance.sustainabilityScore >= 100f;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

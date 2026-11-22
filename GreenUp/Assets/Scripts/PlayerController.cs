@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -49,11 +48,15 @@ public class PlayerController : MonoBehaviour
         // Read horizontal movement input
         moveInput = Input.GetAxis("Horizontal");
 
-        // Apply horizontal velocity while preserving vertical velocity
-        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+        rb.velocity = new Vector2(
+            moveInput * moveSpeed,
+            rb.velocity.y
+        );
 
-        // Update the Animator speed parameter
-        animator.SetFloat("Speed", Mathf.Abs(moveInput));
+        animator.SetFloat(
+            "Speed",
+            Mathf.Abs(moveInput)
+        );
     }
 
     private void HandleJump()
@@ -65,15 +68,24 @@ public class PlayerController : MonoBehaviour
             groundLayer
         );
 
-        // Update the Animator jumping state
-        animator.SetBool("IsJumping", !isGrounded);
+        animator.SetBool(
+            "IsJumping",
+            !isGrounded
+        );
 
-        // Perform jump if Space key is pressed and character is grounded
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        // Accessible alternative input:
+        // Space or W can be used to jump
+        bool jumpPressed =
+            Input.GetKeyDown(KeyCode.Space)
+            || Input.GetKeyDown(KeyCode.W);
+
+        if (jumpPressed && isGrounded)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            rb.velocity = new Vector2(
+                rb.velocity.x,
+                jumpForce
+            );
 
-            // Play the jump sound effect
             if (audioSource != null && jumpSound != null)
             {
                 audioSource.PlayOneShot(jumpSound);
@@ -83,26 +95,26 @@ public class PlayerController : MonoBehaviour
 
     private void HandleFootsteps()
     {
-        // Check whether the player is moving on the ground
         if (!isGrounded || Mathf.Abs(moveInput) < 0.1f)
         {
             footstepTimer = 0f;
             return;
         }
 
-        // Wait until the next footstep is due
         footstepTimer -= Time.deltaTime;
 
         if (footstepTimer <= 0f)
         {
-            // Alternate between left and right footstep sounds
             AudioClip footstep = nextFootIsLeft
                 ? leftFootstepSound
                 : rightFootstepSound;
 
             if (audioSource != null && footstep != null)
             {
-                audioSource.PlayOneShot(footstep);
+                audioSource.PlayOneShot(
+                    footstep,
+                    1.5f
+                );
             }
 
             nextFootIsLeft = !nextFootIsLeft;
